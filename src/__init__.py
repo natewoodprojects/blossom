@@ -18,11 +18,23 @@ def home():
     print(os.environ.get("TMDB_API_KEY"))
 
     response = urllib.request.urlopen(url)
+    print(response)
     data = response.read()
+    print(data)
     dict = json.loads(data)
+    print(dict)
 
 
-    return render_template("home.html", movies=dict["results"])
+    weather = f"https://api.weatherapi.com/v1/forecast.json?key={os.environ['WEATHER_KEY']}&q=Chicago&days=1&aqi=no&alerts=no"
+
+    weather_response = urllib.request.urlopen(weather)
+
+    weather_data = weather_response.read()
+
+    weather_dict = json.loads(weather_data)
+
+
+    return render_template("home.html", movies=dict["results"], weather_info=weather_dict["results"])
 
 @app.route("/movies")
 def get_movies_list():
